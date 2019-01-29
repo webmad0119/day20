@@ -1,0 +1,22 @@
+{
+  "name": "testing_express",
+  "version": "1.0.0",
+  "description": "testiung the possibitidsfjsdfkdfkjfd",
+  "main": "converter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmad0119/day17.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webmad0119/day17/issues"
+  },
+  "homepage": "https://github.com/webmad0119/day17#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
