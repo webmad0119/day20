@@ -1,0 +1,1 @@
+mongoimport --db movies --collection movieNames outputTransformed.json --jsonArray
