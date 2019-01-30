@@ -1,0 +1,29 @@
+
+    {{#each productNames}}
+    {{>product this}}
+    {{/each}}
+    
+    
+    <ul>
+        {{#each marks}}
+            <li>{{@index}} --- {{this}}</li>
+        {{/each}}
+    </ul>
+    {{#if showButton}}
+    <div>
+        <button>button 1</button>
+    </div>
+    {{else}}
+    <div>
+        <button>button 2</button>
+    </div>
+    {{/if}}
+
+    <h1>Nuestra ironhacker favorita es {{name}} y su edad es años</h1>
+
+    <h2>{{{bootcamp}}}</h2>
+    <div>
+        <span>
+            {{age}}
+        </span>
+    </div>
