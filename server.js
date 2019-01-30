@@ -4,12 +4,11 @@ const handlebars = require("express-handlebars")
 const dataModel = require("./datamodels/dataModel").default
 const mongoose = require('mongoose');
 const port = 4069
-const db = `airports`
-const host = `mongodb://localhost/${db}`
+var db = `airports`
+var host = `mongodb://localhost/${db}`
 
 const App = {
     init: function () {
-
         // const schema = { name: String, age: Number }
         const schema = { name: String }
         const Location = mongoose.model('location', schema);
@@ -104,6 +103,5 @@ mongoose.connect(host);
 
 mongoose.connection.on('connected', function () {
     console.log(`Connected to ${host}`)
-
     App.init()
 })
