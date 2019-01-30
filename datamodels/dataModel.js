@@ -9,4 +9,4 @@ function generateDataModel() {
     }
 }
 
-exports.default = generateDataModel
+module.exports = generateDataModel
