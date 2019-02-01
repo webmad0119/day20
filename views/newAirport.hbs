@@ -12,7 +12,7 @@
             if (latitude < -90 || latitude > 90) {
                 return false
             }   
-            
+
             return true
         }
     }
@@ -21,7 +21,10 @@
         const latitude = +document.querySelector("input[name=lat]").value
         const longitude = +document.querySelector("input[name=lon]").value
 
-        
+        if (!Validator.checkLatitude(latitude)) {
+            alert("is not ok")
+            return
+        }
 
         let payload = {
             name: document.querySelector("input[name=name]").value,

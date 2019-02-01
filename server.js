@@ -64,6 +64,20 @@ const App = {
             res.render("newAirport")
         })
 
+        function airportUppercase() {
+            return "aaabvds4".toUpperCase()
+        }
+
+        app.put("/location", (req, res) => {
+            Location
+                // .update({_id: ObjectId("5c545621fc4086f1af4ec5a3")}, {})
+                .update({ name: "aaabvds3" }, { $set: { name: airportUppercase() } })
+                .then(location => {
+                    res.sendStatus(200)
+                    console.log(location)
+                })
+        })
+
         app.post("/location", (req, res) => {
             const latitude = +req.body.lat
 
@@ -87,7 +101,7 @@ const App = {
                 })
 
         })
-        
+
         app.get("/findUser/:id", (req, res, next) => {
             User.findById(req.params.id)
                 .populate("locations")
