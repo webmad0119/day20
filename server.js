@@ -15,7 +15,7 @@ const host = `mongodb://localhost/${db}`
 const App = {
     init: function () {
         const locationSchema = { name: String, coords: Object }
-        const userSchema = { username: String, password: String }
+        const userSchema = { username: String, password: String, locations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'locations' }] }
         const Location = mongoose.model('locations', locationSchema);
         const User = mongoose.model('username', userSchema);
 
@@ -86,6 +86,15 @@ const App = {
                     //res.redirect("/airport-created")
                 })
 
+        })
+        
+        app.get("/findUser/:id", (req, res, next) => {
+            User.findById(req.params.id)
+                .populate("locations")
+                .then(user => {
+                    res.json(user)
+                })
+                .catch(e => res.json(e))
         })
 
         app.listen(port)

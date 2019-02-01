@@ -7,14 +7,21 @@
 </form>
 
 <script>
+    const Validator = {
+        checkLatitude : (latitude) => {
+            if (latitude < -90 || latitude > 90) {
+                return false
+            }   
+            
+            return true
+        }
+    }
+
     document.getElementById("newAirport").onclick = function () {
         const latitude = +document.querySelector("input[name=lat]").value
         const longitude = +document.querySelector("input[name=lon]").value
 
-        if (latitude < -90 || latitude > 90) {
-            alert("latitude has the wrong value")
-            return
-        }
+        
 
         let payload = {
             name: document.querySelector("input[name=name]").value,
