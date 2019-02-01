@@ -1,0 +1,40 @@
+<form action="/location" method="POST">
+    <input type="text" name="name" placeholder="airport name" value="aaa">
+    <input type="text" name="lat" placeholder="latitude" value="10">
+    <input type="text" name="lon" placeholder="longitude" value="20">
+
+    <input type="button" value="Create a new airport" id="newAirport">
+</form>
+
+<script>
+    document.getElementById("newAirport").onclick = function () {
+        const latitude = +document.querySelector("input[name=lat]").value
+        const longitude = +document.querySelector("input[name=lon]").value
+
+        if (latitude < -90 || latitude > 90) {
+            alert("latitude has the wrong value")
+            return
+        }
+
+        let payload = {
+            name: document.querySelector("input[name=name]").value,
+            lon: longitude,
+            lat: latitude
+        }
+
+        fetch('http://localhost:4069/location', {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+                // "Content-Type": "application/x-www-form-urlencoded",
+            },
+            redirect: "follow", // manual, *follow, error
+            referrer: "no-referrer", // no-referrer, *client
+            body: JSON.stringify(payload), // body data type must match "Content-Type" header
+        })
+            .then(response => response.json()); //
+    }
+</script>

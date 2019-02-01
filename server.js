@@ -2,20 +2,30 @@ const express = require('express');
 const app = express();
 const handlebars = require("express-handlebars")
 const dataModel = require("./datamodels/dataModel")
-var bodyParser = require('body-parser')
+//needed to parse request via POST
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
+
+const saltRounds = 1;
 const port = 4069
-var db = `airports`
-var host = `mongodb://localhost/${db}`
+const db = `airports`
+const host = `mongodb://localhost/${db}`
 
 const App = {
     init: function () {
-        const schema = { name: String, coords: Object }
-        const Location = mongoose.model('locations', schema);
-        
+        const locationSchema = { name: String, coords: Object }
+        const userSchema = { username: String, password: String }
+        const Location = mongoose.model('locations', locationSchema);
+        const User = mongoose.model('username', userSchema);
+
         //here we set the templating default engine
         app.set('view engine', 'hbs');
+
+        //without this you cannot receive data via POST and understand it via req.body
+        app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
+
 
         //todo: indicate origin URL
         app.engine('hbs', handlebars({
@@ -29,19 +39,53 @@ const App = {
             Location
                 .findById(req.params.airportID)
                 .then(airport => {
-                    res.render("airport-description", {airport})
+                    res.render("airport-description", { airport })
                 })
         });
 
-        app.post("/location", (req, res, next) => {
-            console.log(req.body)
-            Location
-                .create({name: req.body.name, coords: req.body.coords})
+        app.get("/signup", (req, res, next) => {
+            res.render("carlos")
+        })
+
+        app.post("/signup", (req, res, next) => {
+            //console.log(req.body)
+
+            const salt = bcrypt.genSaltSync(saltRounds);
+            const encriptedPassword = bcrypt.hashSync(req.body.password, salt);
+
+            User
+                .create({ username: req.body.username, password: encriptedPassword })
                 .then(done => {
                     console.log(done)
+                })
+        })
+
+        app.get("/location", (req, res) => {
+            res.render("newAirport")
+        })
+
+        app.post("/location", (req, res) => {
+            const latitude = +req.body.lat
+
+            if (latitude < -90 || latitude > 90) {
+                res.sendStatus(500)
+                return
+            }
+
+            Location
+                .create({
+                    name: req.body.name, coords: {
+                        coordinates: [+req.body.lon, +req.body.lat]
+                    }
+                })
+                .then(done => {
                     res.sendStatus(200)
                     res.end()
+
+                    //alternatively
+                    //res.redirect("/airport-created")
                 })
+
         })
 
         app.listen(port)
